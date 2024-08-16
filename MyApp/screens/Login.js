@@ -16,8 +16,10 @@ const Login = ({ navigation }) => {
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        "https://d7b4-103-167-38-141.ngrok-free.app/api/login",
+        "https://d070-103-167-38-141.ngrok-free.app/api/login",
+        // "http://localhost:5000/api/login",
         {
+          mode: "no-cors",
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -29,9 +31,9 @@ const Login = ({ navigation }) => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
+      console.log(result);
 
       const result = await response.json();
-
       if (!result.message) {
         Alert.alert("Error", result.error);
       } else {
@@ -41,7 +43,8 @@ const Login = ({ navigation }) => {
         navigation.navigate("Home");
       }
     } catch (error) {
-      Alert.alert(error);
+      Alert.alert("Error", "logined failed");
+      console.log("error :", error);
     }
   };
 
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 30,
     borderRadius: 8,
-    width: 350,
+    width: "95%",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
@@ -112,7 +115,7 @@ const styles = StyleSheet.create({
   button: {
     width: "100%",
     padding: 12,
-    fontSize: 16,
+    fontSize: 22,
     fontWeight: "bold",
     backgroundColor: "#007bff",
     borderRadius: 4,
@@ -122,6 +125,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     textAlign: "center",
+    width: "100%",
   },
   details: {
     marginBottom: 15,
@@ -147,11 +151,15 @@ const styles = StyleSheet.create({
   footerText: {
     color: "#777",
     fontSize: 14,
+    width: "100%",
+    textAlign: "center",
   },
   link: {
     color: "#007bff",
     textDecorationLine: "underline",
     marginTop: 5,
+    width: "100%",
+    textAlign: "center",
   },
 });
 

@@ -20,7 +20,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const IP = "192.168.1.102"; // Update with your server IP
+const IP = "192.168.236.208"; // Update with your server IP
 
 export default function HomeScreen({ navigation }) {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -28,7 +28,7 @@ export default function HomeScreen({ navigation }) {
   const [fireData, setFireData] = useState(null);
   const [smokeData, setSmokeData] = useState(null);
   const [tempData, setTempData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -79,6 +79,7 @@ export default function HomeScreen({ navigation }) {
     };
     fireSocket.onmessage = (event) => {
       setFireData(event.data);
+      console.log("Fire:", event.data);
     };
     fireSocket.onerror = (error) => {
       console.log("Fire WebSocket Error: ", error.message);
@@ -92,7 +93,7 @@ export default function HomeScreen({ navigation }) {
     };
     smokeSocket.onmessage = (event) => {
       setSmokeData(event.data);
-      console.log(event.data);
+      console.log("Smoke:", event.data);
     };
     smokeSocket.onerror = (error) => {
       console.log("Smoke WebSocket Error: ", error.message);
@@ -106,7 +107,8 @@ export default function HomeScreen({ navigation }) {
     };
     tempSocket.onmessage = (event) => {
       setTempData(event.data);
-      setLoading(false);
+      console.log("Temp:", event.data);
+      // setLoading(false);
     };
     tempSocket.onerror = (error) => {
       console.log("Temperature WebSocket Error: ", error.message);
@@ -136,9 +138,20 @@ export default function HomeScreen({ navigation }) {
         Fire Detection, Monitoring and Alerting System based on IoT
       </Text>
 
-      <Text style={styles.status}>Fire Sensor Status: {fireData}</Text>
-      <Text style={styles.status}>Smoke Sensor Status: {smokeData}</Text>
-      <Text style={styles.status}>Temperature: {tempData}°C</Text>
+      <Text style={styles.status}>
+        {" "}
+        <Text style={styles.statusTitle}> Fire Sensor Status : </Text>
+        <Text style={styles.statusData}> {fireData} </Text>
+      </Text>
+      <Text style={styles.status}>
+        <Text style={styles.statusTitle}> Smoke Sensor Status : </Text>
+        <Text style={styles.statusData}> {smokeData} </Text>
+      </Text>
+      <Text style={styles.status}>
+        {" "}
+        <Text style={styles.statusTitle}>Temperature: </Text>
+        <Text style={styles.statusData}>{tempData}°C</Text>
+      </Text>
 
       <Button
         title="Play Exit Path Map"
@@ -185,13 +198,14 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   status: {
+    display: "flex",
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
     marginVertical: 10,
     width: "90%",
-    textAlign: "center",
-    fontSize: 18,
+    textAlign: "start",
+    fontSize: 14,
     color: "#333",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -214,5 +228,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  statusTitle: {
+    flex: 1,
+    fontWeight: "bold",
+    color: "#3d2be0",
+    marginBottom: 5,
+    fontSize: 16,
+  },
+  statusData: {
+    flex: 1,
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 5,
   },
 });

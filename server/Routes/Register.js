@@ -6,7 +6,7 @@ const {
   GetAllRegisterData,
   UpdateSingleRegisterData,
   DeleteSingleRegisterData,
-  DeleteAllRegisterData,
+
   Logindata,
   Getprofile,
 } = require("../Controls/Register");
@@ -17,6 +17,5 @@ Router.get("/profile/:id", Getprofile);
 Router.get("/", GetAllRegisterData);
 Router.patch("/:id", UpdateSingleRegisterData);
 Router.delete("/:id", DeleteSingleRegisterData);
-Router.delete("/", DeleteAllRegisterData);
 
 module.exports = Router;

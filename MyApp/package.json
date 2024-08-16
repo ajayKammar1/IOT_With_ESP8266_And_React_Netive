@@ -30,5 +30,5 @@
     "@babel/core": "^7.20.0"
   },
   "private": true,
-  "proxy": "http://localhost:5000"
+  "proxy": "https://d7b4-103-167-38-141.ngrok-free.app"
 }

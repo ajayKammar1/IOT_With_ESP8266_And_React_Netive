@@ -49,7 +49,8 @@ const Profile = ({ navigation }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://d7b4-103-167-38-141.ngrok-free.app/api/profile/${value}`
+          `https://d070-103-167-38-141.ngrok-free.app/api/profile/${value}`,
+          { mode: "no-cors" }
         );
         if (!response.ok) {
           console.log("Network response was not ok : ", response.status);

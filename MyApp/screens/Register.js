@@ -24,7 +24,8 @@ const Register = ({ navigation }) => {
   const handleAddData = (e) => {
     e.preventDefault();
 
-    fetch("https://d7b4-103-167-38-141.ngrok-free.app/api/register/", {
+    fetch("https://d070-103-167-38-141.ngrok-free.app/api/register/", {
+      mode: "no-cors",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -62,7 +63,7 @@ const Register = ({ navigation }) => {
           />
         </View>
         <View style={styles.details}>
-          <Text style={styles.label}>Sirname</Text>
+          <Text style={styles.label}>Surname</Text>
           <TextInput
             style={styles.input}
             placeholder="Enter your sirname"
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 30,
     borderRadius: 8,
-    width: 450,
+    width: "95%",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
@@ -167,11 +168,15 @@ const styles = StyleSheet.create({
   footerText: {
     color: "#777",
     fontSize: 14,
+    width: "100%",
+    textAlign: "center",
   },
   link: {
     color: "#007BFF",
     textDecorationLine: "underline",
     marginTop: 5,
+    width: "100%",
+    textAlign: "center",
   },
 });
 
