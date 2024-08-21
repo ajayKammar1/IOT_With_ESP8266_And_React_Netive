@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
-
+const mongoose = require("mongoose");
+const URL = process.env.DB_URL;
 mongoose
-    .connect("mongodb://localhost:27017/FormsData")
-    .then(() => console.log("connected to database..."))
-    .catch(() => console.log("error", err))
+  .connect(URL)
+  .then(() => console.log("connected to database..."))
+  .catch(() => console.log("error", err));

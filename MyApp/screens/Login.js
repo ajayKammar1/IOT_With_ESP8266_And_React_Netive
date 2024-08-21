@@ -8,44 +8,25 @@ import {
   Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
-    try {
-      const response = await fetch(
-        "https://d070-103-167-38-141.ngrok-free.app/api/login",
-        // "http://localhost:5000/api/login",
-        {
-          mode: "no-cors",
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      console.log(result);
-
-      const result = await response.json();
-      if (!result.message) {
-        Alert.alert("Error", result.error);
-      } else {
-        await AsyncStorage.setItem("UserID", result.user._id);
-        console.log();
+    axios
+      .post("http://192.168.1.105:5000/api/Login/", { email, password })
+      .then((response) => {
+        console.log(response.data.user._id);
+        AsyncStorage.setItem("UserID", response.data.user._id);
         Alert.alert("Success", "logined successfully");
         navigation.navigate("Home");
-      }
-    } catch (error) {
-      Alert.alert("Error", "logined failed");
-      console.log("error :", error);
-    }
+      })
+      .catch((error) => {
+        Alert.alert("Error", "wrong Credentials ...");
+        console.log("error :", error);
+      });
   };
 
   return (

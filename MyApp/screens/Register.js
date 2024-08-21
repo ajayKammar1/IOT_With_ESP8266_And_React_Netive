@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 // import axios from "axios";
 import {
@@ -24,28 +25,15 @@ const Register = ({ navigation }) => {
   const handleAddData = (e) => {
     e.preventDefault();
 
-    fetch("https://d070-103-167-38-141.ngrok-free.app/api/register/", {
-      mode: "no-cors",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    axios
+      .post("http://192.168.1.105:5000/api/register/", data)
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
         Alert.alert("Success", "Data registered successfully");
-        console.log(data);
+        console.log(response.data);
         navigation.navigate("Login");
       })
       .catch((error) => {
         Alert.alert("Error", "Failed to store data");
-        console.log(error);
       });
   };
 

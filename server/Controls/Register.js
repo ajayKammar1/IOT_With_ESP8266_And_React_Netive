@@ -2,13 +2,17 @@ const Register = require("../Modules/Register");
 
 const AddRegisterData = async (req, res) => {
   const data = req.body;
-  // console.log(data)
+  console.log(data);
   try {
     const NewData = new Register(data);
     const result = await NewData.save();
-    res.send(result);
+    console.log(result);
+    res.status(200).json(result);
   } catch {
-    console.log(err);
+    (err) => {
+      console.log("err", err);
+      res.status(500).send(err);
+    };
   }
 };
 
@@ -44,9 +48,11 @@ const UpdateSingleRegisterData = async (req, res) => {
 
 const Getprofile = async (req, res) => {
   const _id = req.params.id;
+
   const result = await Register.findById(_id);
+  console.log(result);
   !result && res.send({ error: "User Not found" });
-  res.send({ User: result, message: "User Profile" });
+  res.status(200).json({ User: result, message: "User Profile" });
 };
 
 const DeleteSingleRegisterData = async (req, res) => {

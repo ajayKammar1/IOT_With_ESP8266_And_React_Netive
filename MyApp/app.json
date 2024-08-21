@@ -4,10 +4,10 @@
     "slug": "MyApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/Logo1.png",
+    "icon": "./assets/Images/Logo1.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/Logo.png",
+      "image": "./assets/Images/Logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,10 +18,16 @@
       "adaptiveIcon": {
         "foregroundImage": "",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.ajayk400.MyApp"
     },
     "web": {
       "favicon": ""
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6740cba6-9797-4c18-b115-e18b91074035"
+      }
     }
   }
 }
