@@ -26,7 +26,7 @@ const Register = ({ navigation }) => {
     e.preventDefault();
 
     axios
-      .post("http://192.168.1.105:5000/api/register/", data)
+      .post("/api/register/", data)
       .then((response) => {
         Alert.alert("Success", "Data registered successfully");
         console.log(response.data);

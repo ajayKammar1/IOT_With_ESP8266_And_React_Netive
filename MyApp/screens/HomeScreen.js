@@ -6,12 +6,13 @@ import {
   Button,
   Alert,
   Image,
+  TextInput,
   ActivityIndicator,
 } from "react-native";
 import { Audio } from "expo-av";
 import Modal from "react-native-modal";
 import * as Notifications from "expo-notifications";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -20,7 +21,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const IP = "192.168.236.208"; // Update with your server IP
+// const IP = "192.168.236.208"; // Update with your server IP
 
 export default function HomeScreen({ navigation }) {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -29,7 +30,9 @@ export default function HomeScreen({ navigation }) {
   const [smokeData, setSmokeData] = useState(null);
   const [tempData, setTempData] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [ipAddress, setIpAddress] = useState("");
+  const [IP, setIP] = useState("192.168.236.208");
+  const [NewIP, setNewIP] = useState(false);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -68,6 +71,13 @@ export default function HomeScreen({ navigation }) {
   }, [fireData, smokeData]);
 
   useEffect(() => {
+    if (!IP) {
+      console.log(
+        "IP address is not available. WebSocket connection will not start."
+      );
+      return; // Do not start WebSocket connections if IP is empty
+    }
+
     setLoading(true);
 
     const fireSocket = new WebSocket(`ws://${IP}:81`);
@@ -124,6 +134,21 @@ export default function HomeScreen({ navigation }) {
     };
   }, []);
 
+  useEffect(() => {
+    const getStoredIPAddress = async () => {
+      try {
+        const storedIP = await AsyncStorage.getItem("hardwareIPAddress");
+        if (storedIP) {
+          setIP(storedIP);
+        }
+      } catch (error) {
+        Alert.alert("Error", "Failed to retrieve the IP address.");
+      }
+    };
+
+    getStoredIPAddress();
+  }, [NewIP]);
+
   if (!loading) {
     return (
       <View style={styles.loader}>
@@ -132,11 +157,50 @@ export default function HomeScreen({ navigation }) {
     );
   }
 
+  const handleInputChange = (value) => {
+    setIpAddress(value); // Always runs
+  };
+
+  const handleSubmit = async () => {
+    if (ipAddress) {
+      try {
+        await AsyncStorage.setItem("hardwareIPAddress", ipAddress); // Async function
+        setNewIP(!NewIP);
+        Alert.alert("Success", "IP address saved successfully!");
+      } catch (error) {
+        Alert.alert("Error", "Failed to save the IP address.");
+      }
+    } else {
+      Alert.alert("Warning", "Please enter a valid IP address.");
+    }
+  };
+
   return (
     <View style={styles.container}>
+      <Text style={styles.Maintitle}>
+        Welcome to DMS Mandal's College of Computer Application Fire
+        Safety System
+      </Text>
+
       <Text style={styles.title}>
         Fire Detection, Monitoring and Alerting System based on IoT
       </Text>
+      <Text style={styles.IP}>Hardware IP : {!IP ? "IP not Found" : IP}</Text>
+      <Button title="Update IP Address" onPress={() => setNewIP(!NewIP)} />
+      {NewIP ? (
+        <View>
+          <Text style={styles.title}>Enter Hardware IP Address</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter IP address"
+            value={ipAddress}
+            onChangeText={handleInputChange}
+          />
+          <Button title="Save IP Address" onPress={handleSubmit} />
+        </View>
+      ) : (
+        ""
+      )}
 
       <Text style={styles.status}>
         {" "}
@@ -191,11 +255,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   title: {
+    color: "#333",
     textAlign: "center",
     margin: 20,
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: "bold",
-    color: "#333",
   },
   status: {
     display: "flex",
@@ -242,5 +306,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
     marginBottom: 5,
+  },
+  Maintitle: {
+    color: "blue",
+    textAlign: "center",
+    margin: 20,
+    fontSize: 22,
+    fontWeight: "bold",
+  },
+  IP: {
+    color: "green",
+    textAlign: "center",
+    margin: 20,
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });

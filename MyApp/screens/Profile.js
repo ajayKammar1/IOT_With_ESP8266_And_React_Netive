@@ -51,7 +51,7 @@ const Profile = ({ navigation }) => {
     console.log(value);
     if (value) {
       axios
-        .get(`http://192.168.1.105:5000/api/profile/${value}`)
+        .get(`/api/profile/${value}`)
         .then((response) => {
           setData(response.data.User);
           console.log("response", response.data.User);

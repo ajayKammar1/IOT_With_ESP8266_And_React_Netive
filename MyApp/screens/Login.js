@@ -16,7 +16,7 @@ const Login = ({ navigation }) => {
 
   const handleSubmit = async () => {
     axios
-      .post("http://192.168.1.105:5000/api/Login/", { email, password })
+      .post("/api/Login/", { email, password })
       .then((response) => {
         console.log(response.data.user._id);
         AsyncStorage.setItem("UserID", response.data.user._id);
