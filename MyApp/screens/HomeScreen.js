@@ -132,7 +132,7 @@ export default function HomeScreen({ navigation }) {
       smokeSocket.close();
       tempSocket.close();
     };
-  }, []);
+  }, [IP]);
 
   useEffect(() => {
     const getStoredIPAddress = async () => {
